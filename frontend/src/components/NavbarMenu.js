@@ -1,31 +1,46 @@
-import React from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
-const CustomNavbar = () => {
-  const navigate = useNavigate();
+const NavbarMenu = () => {
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate(); // <- navigácia po odhlásení
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+    logout();           // odstráni token a nastaví false
+    navigate('/login'); // presmeruje na login
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
       <Container>
-        <Navbar.Brand as={Link} to="/">Employee Management</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Brand as={Link} to="/dashboard">Správa zamestnancov</Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbar-content" />
+        <Navbar.Collapse id="navbar-content">
           <Nav className="me-auto">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/projects">Projects</Nav.Link>
-            <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
-            <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+            <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
+            <Nav.Link as={Link} to="/employees">Zamestnanci</Nav.Link>
+            <Nav.Link as={Link} to="/company-items">Firemné dáta</Nav.Link>
+            <Nav.Link as={Link} to="/projects">Vytvoriť projekt</Nav.Link>
+            <Nav.Link as={Link} to="/create-profile">Vytvoriť profil</Nav.Link>
           </Nav>
+
+          <Dropdown align="end">
+            <Dropdown.Toggle variant="outline-light" id="user-dropdown">
+              ☰
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to="/edit-profile">Upraviť profil</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={handleLogout}>Odhlásiť sa</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
 };
 
-export default CustomNavbar;
+export default NavbarMenu;

@@ -1,47 +1,62 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Form, Button, Container, Card } from 'react-bootstrap';
+import { AuthContext } from '../context/AuthContext';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5001/api/auth/login', {
+      const res = await axios.post('http://localhost:5001/api/auth/login', {
         username,
-        password
+        password,
       });
-      localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
+
+      localStorage.setItem('token', res.data.token);
+      setIsAuthenticated(true); // nastavíme stav
+      navigate('/dashboard');   // presmeruj na dashboard
     } catch (error) {
-      alert('Invalid username or password');
+      console.error('Chyba pri prihlásení:', error?.response?.data || error.message);
+      alert('Nesprávne meno alebo heslo');
     }
   };
 
   return (
-    <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
-      <Row className="w-100">
-        <Col md={{ span: 6, offset: 3 }}>
-          <Card className="p-4 shadow-lg">
-            <h1 className="text-center">Login</h1>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group>
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
-              </Form.Group>
-              <Form.Group className="mt-3">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-              </Form.Group>
-              <Button type="submit" className="btn btn-primary w-100 mt-4">Login</Button>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
+    <Container className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
+      <Card className="p-4 shadow" style={{ minWidth: '300px' }}>
+        <h2 className="text-center mb-4">Login</h2>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Meno</Form.Label>
+            <Form.Control
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              placeholder="Zadaj meno"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Heslo</Form.Label>
+            <Form.Control
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Zadaj heslo"
+            />
+          </Form.Group>
+
+          <Button type="submit" className="w-100">Login</Button>
+        </Form>
+      </Card>
     </Container>
   );
 }
