@@ -1,133 +1,150 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Container, Form, Button } from 'react-bootstrap';
 
-const AddEmployee = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    email: '',
-    address: '',
-    position: '',
-    department: '',
-    startDate: ''
-  });
+function AddEmployee() {
+  const [personalData, setPersonalData] = useState({});
+  const [contactData, setContactData] = useState({});
+  const [addresses, setAddresses] = useState({});
+  const [marketing, setMarketing] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handlePersonalChange = (e) => {
+    setPersonalData({ ...personalData, [e.target.name]: e.target.value });
+  };
+  const handleContactChange = (e) => {
+    setContactData({ ...contactData, [e.target.name]: e.target.value });
+  };
+  const handleAddressChange = (e) => {
+    setAddresses({ ...addresses, [e.target.name]: e.target.value });
+  };
+  const handleMarketingChange = (e) => {
+    setMarketing({ ...marketing, [e.target.name]: e.target.checked });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
-    try {
-      await axios.post('http://localhost:5001/api/employees', formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      alert('Zamestnanec bol úspešne pridaný.');
-    } catch (error) {
-      console.error('Chyba pri pridávaní zamestnanca:', error.response?.data || error.message);
-      alert('Nepodarilo sa pridať zamestnanca');
-    }
+    const data = {
+      ...personalData,
+      ...contactData,
+      ...addresses,
+      ...marketing
+    };
+    alert(JSON.stringify(data, null, 2));
   };
 
   return (
-    <Container>
-      <h1 className="mt-4">Pridať zamestnanca</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Meno</Form.Label>
-          <Form.Control
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
+    <div className="container mt-5" style={{ maxWidth: 850 }}>
+      <h2>Pridať zamestnanca</h2>
+      <form onSubmit={handleSubmit}>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Priezvisko</Form.Label>
-          <Form.Control
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
+        {/* OSOBNÉ ÚDAJE */}
+        <fieldset className="mb-4">
+          <legend>Osobné údaje</legend>
+          <div className="row">
+            <div className="col-md-6 mb-2">
+              <label>Titul pred menom:</label>
+              <input name="titulPred" type="text" className="form-control" onChange={handlePersonalChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>Titul za menom:</label>
+              <input name="titulZa" type="text" className="form-control" onChange={handlePersonalChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>Meno klienta:</label>
+              <input name="meno" type="text" className="form-control" onChange={handlePersonalChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>Priezvisko klienta:</label>
+              <input name="priezvisko" type="text" className="form-control" onChange={handlePersonalChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>Rodné priezvisko:</label>
+              <input name="rodnePriezvisko" type="text" className="form-control" onChange={handlePersonalChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>Štátna príslušnosť:</label>
+              <input name="statnaPrislusnost" type="text" className="form-control" onChange={handlePersonalChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>Miesto narodenia:</label>
+              <input name="miestoNarodenia" type="text" className="form-control" onChange={handlePersonalChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>Krajina narodenia:</label>
+              <input name="krajinaNarodenia" type="text" className="form-control" onChange={handlePersonalChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>Typ dokladu:</label>
+              <input name="typDokladu" type="text" className="form-control" onChange={handlePersonalChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>Rodné číslo:</label>
+              <input name="rodneCislo" type="text" className="form-control" onChange={handlePersonalChange} />
+            </div>
+          </div>
+        </fieldset>
+        
+        {/* KONTAKTNÉ ÚDAJE */}
+        <fieldset className="mb-4">
+          <legend>Kontaktné údaje</legend>
+          <div className="row">
+            <div className="col-md-6 mb-2">
+              <label>Mobil:</label>
+              <input name="mobil" type="tel" className="form-control" onChange={handleContactChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>E-mail:</label>
+              <input name="email" type="email" className="form-control" onChange={handleContactChange} />
+            </div>
+          </div>
+        </fieldset>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Telefón</Form.Label>
-          <Form.Control
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
+        {/* ADRESY */}
+        <fieldset className="mb-4">
+          <legend>Adresy</legend>
+          <div className="row">
+            <div className="col-md-6 mb-2">
+              <label>Ulica:</label>
+              <input name="ulica" type="text" className="form-control" onChange={handleAddressChange} />
+            </div>
+            <div className="col-md-2 mb-2">
+              <label>Číslo:</label>
+              <input name="cislo" type="text" className="form-control" onChange={handleAddressChange} />
+            </div>
+            <div className="col-md-4 mb-2">
+              <label>Mesto:</label>
+              <input name="mesto" type="text" className="form-control" onChange={handleAddressChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>PSČ:</label>
+              <input name="psc" type="text" className="form-control" onChange={handleAddressChange} />
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>Štát:</label>
+              <input name="stat" type="text" className="form-control" onChange={handleAddressChange} />
+            </div>
+          </div>
+        </fieldset>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </Form.Group>
+        {/* MARKETING */}
+        <fieldset className="mb-4">
+          <legend>Marketing</legend>
+          <div className="row">
+            <div className="col-md-6 mb-2">
+              <label>
+                <input name="marketingPonuky" type="checkbox" onChange={handleMarketingChange} /> Oslovovať marketingovými ponukami
+              </label>
+            </div>
+            <div className="col-md-6 mb-2">
+              <label>
+                <input name="suhlasSpracovanie" type="checkbox" onChange={handleMarketingChange} /> Súhlas so spracovaním osobných údajov
+              </label>
+            </div>
+          </div>
+        </fieldset>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Adresa</Form.Label>
-          <Form.Control
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Pozícia</Form.Label>
-          <Form.Control
-            type="text"
-            name="position"
-            value={formData.position}
-            onChange={handleChange}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Oddelenie</Form.Label>
-          <Form.Control
-            type="text"
-            name="department"
-            value={formData.department}
-            onChange={handleChange}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Dátum nástupu</Form.Label>
-          <Form.Control
-            type="date"
-            name="startDate"
-            value={formData.startDate}
-            onChange={handleChange}
-          />
-        </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Pridať zamestnanca
-        </Button>
-      </Form>
-    </Container>
+        <button type="submit" className="btn btn-primary">Uložiť zamestnanca</button>
+      </form>
+    </div>
   );
-};
+}
 
 export default AddEmployee;

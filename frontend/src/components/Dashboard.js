@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CountUp from 'react-countup';
 
+// Import Bootstrap Icons
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -39,31 +41,23 @@ function Dashboard() {
   return (
     <Container className="mt-5 pt-5">
       <div className="text-center text-white mb-4">
-        <h2 style={{ textShadow: '0 0 6px #0ef' }}>Vitaj späť, Maťo!</h2>
-        <p style={{ fontSize: '1.2rem', opacity: 0.85 }}>{date}</p>
+        <h2 className="dashboard-welcome">Vitaj späť, Maťo!</h2>
+        <p className="dashboard-date">{date}</p>
       </div>
 
       <Row className="mb-4">
         {[
-          { label: 'Zamestnanci', value: stats.employeeCount, icon: '👷' },
-          { label: 'Projekty', value: stats.projectCount, icon: '📁' },
-          { label: 'Krajiny', value: stats.countryCount, icon: '🌍' },
-          { label: 'Dnes na smene', value: 0, icon: '⏳' } // môže byť neskôr dynamické
+          { label: 'Zamestnanci', value: stats.employeeCount, icon: 'bi-people' },
+          { label: 'Projekty', value: stats.projectCount, icon: 'bi-folder' },
+          { label: 'Krajiny', value: stats.countryCount, icon: 'bi-globe' },
+          { label: 'Dnes na smene', value: 0, icon: 'bi-hourglass' } // môže byť neskôr dynamické
         ].map((stat, i) => (
           <Col md={6} lg={3} className="mb-4" key={i}>
-            <Card
-              style={{
-                background: 'rgba(0,0,0,0.45)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                boxShadow: '0 8px 32px rgba(0,150,255,0.25)',
-                color: '#0ef'
-              }}
-            >
+            <Card className="dashboard-stat-card">
               <Card.Body className="text-center">
-                <h1>{stat.icon}</h1>
+                <i className={`bi ${stat.icon}`} style={{ fontSize: '2rem', color: '#fff' }}></i>
                 <h3>
-                    <CountUp end={stat.value} duration={1.5} separator=" " />
+                  <CountUp end={stat.value} duration={1.5} separator=" " />
                 </h3>
                 <p style={{ marginBottom: 0 }}>{stat.label}</p>
               </Card.Body>
@@ -75,33 +69,32 @@ function Dashboard() {
       {/* Shortcuty */}
       <Row className="mb-4">
         <Col md={6} className="mb-3">
-          <Card className="glass-card text-white text-center" onClick={() => navigate('/add-employee')} style={{ cursor: 'pointer' }}>
+          <Card className="dashboard-shortcut-card glass-card text-white text-center" onClick={() => navigate('/add-employee')}>
             <Card.Body>
-              <h5>➕ Pridať zamestnanca</h5>
+              <h5>
+                <i className="bi bi-plus-circle" style={{ marginRight: '8px' }}></i>
+                Pridať zamestnanca
+              </h5>
             </Card.Body>
           </Card>
         </Col>
         <Col md={6} className="mb-3">
-          <Card className="glass-card text-white text-center" onClick={() => navigate('/projects')} style={{ cursor: 'pointer' }}>
+          <Card className="dashboard-shortcut-card glass-card text-white text-center" onClick={() => navigate('/projects')}>
             <Card.Body>
-              <h5>🗂 Prehľad projektov</h5>
+              <h5>
+                <i className="bi bi-collection" style={{ marginRight: '8px' }}></i>
+                Prehľad projektov
+              </h5>
             </Card.Body>
           </Card>
         </Col>
       </Row>
 
       {/* Notifikácie */}
-      <Card
-        className="glass-card text-white"
-        style={{
-          background: 'rgba(255,255,255,0.05)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255,255,255,0.05)',
-          boxShadow: '0 4px 24px rgba(0,150,255,0.15)'
-        }}
-      >
-        <Card.Header style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-          🔔 Poslední zamestnanci
+      <Card className="dashboard-notification-card glass-card text-white">
+        <Card.Header className="dashboard-notification-header">
+          <i className="bi bi-bell" style={{ marginRight: '8px' }}></i>
+          Poslední zamestnanci
         </Card.Header>
         <Card.Body>
           <ul className="mb-0">

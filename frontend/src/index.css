@@ -1,1 +1,26 @@
-/* Global styles */ 
+/* Globálne pozadie */
+body {
+  background: linear-gradient(to bottom, #000000, #333333);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+/* Pozadie pre Navbar */
+.navbar {
+  background: linear-gradient(to right, #000000, #333333) !important; /* Prechod horizontálne */
+  border-bottom: 1px solid #444; /* Jemná spodná čiara */
+}
+
+.navbar .nav-link, 
+.navbar .navbar-brand, 
+.navbar .dropdown-item {
+  color: #ffffff !important; /* Biela farba textu */
+}
+
+.navbar .nav-link:hover, 
+.navbar .dropdown-item:hover {
+  color: #aaaaaa !important; /* Svetlejšia farba pri hover */
+}

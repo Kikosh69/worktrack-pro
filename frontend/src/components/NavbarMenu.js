@@ -3,6 +3,9 @@ import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
+// Import Bootstrap Icons
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 function NavbarMenu() {
   const { setIsAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -14,45 +17,53 @@ function NavbarMenu() {
   };
 
   return (
-    <Navbar
-      expand="lg"
-      style={{
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        background: 'rgba(10, 25, 47, 0.8)',
-        borderBottom: '1px solid rgba(0, 150, 255, 0.3)',
-        boxShadow: '0 8px 32px rgba(0, 150, 255, 0.25)',
-        zIndex: 1030
-      }}
-      variant="dark"
-      fixed="top"
-    >
+    <Navbar expand="lg" className="navbar" variant="dark" fixed="top">
       <Container>
-        <Navbar.Brand
-          href="/dashboard"
-          style={{
-            fontWeight: 700,
-            fontSize: '1.6rem',
-            color: '#0ef',
-            letterSpacing: '1px',
-            textShadow: '0 0 8px #0ef'
-          }}
-        >
-          🚀 WorkTrack
+        <Navbar.Brand href="/dashboard" className="navbar-brand">
+          <i className="bi bi-rocket"></i> WorkTrack
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-            <Nav.Link href="/employees">Zamestnanci</Nav.Link>
-            <Nav.Link href="/projects">Projekty</Nav.Link>
-            <Nav.Link href="/company-items">Firemné položky</Nav.Link>
+            <Nav.Link href="/dashboard">
+              <i className="bi bi-speedometer2"></i> Dashboard
+            </Nav.Link>
+            <Nav.Link href="/employees">
+              <i className="bi bi-people"></i> Zamestnanci
+            </Nav.Link>
+            <Nav.Link href="/projects">
+              <i className="bi bi-folder"></i> Projekty
+            </Nav.Link>
+            <Nav.Link href="/company-items">
+              <i className="bi bi-box"></i> Firemné položky
+            </Nav.Link>
+            <Nav.Link href="/calendar">
+              <i className="bi bi-calendar"></i> Kalendár
+            </Nav.Link>
+            <Nav.Link href="/contacts">
+              <i className="bi bi-person-lines-fill"></i> Kontakty
+            </Nav.Link>
+            <Nav.Link href="/payments">
+              <i className="bi bi-cash-stack"></i> Platby
+            </Nav.Link>
           </Nav>
           <Nav>
-            <NavDropdown title="👤 Môj účet" id="account-dropdown" align="end">
-              <NavDropdown.Item href="/edit-profile">🛠 Upraviť profil</NavDropdown.Item>
+            <NavDropdown 
+              title={
+                <span>
+                  <i className="bi bi-person-circle"></i> Môj účet
+                </span>
+              } 
+              id="account-dropdown" 
+              align="end"
+            >
+              <NavDropdown.Item href="/edit-profile">
+                <i className="bi bi-gear"></i> Upraviť profil
+              </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={handleLogout}>🚪 Odhlásiť sa</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleLogout}>
+                <i className="bi bi-box-arrow-right"></i> Odhlásiť sa
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

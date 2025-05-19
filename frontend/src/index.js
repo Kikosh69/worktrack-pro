@@ -1,4 +1,5 @@
-import 'bootswatch/dist/darkly/bootstrap.min.css'; // <- toto je tmavá téma
+import 'bootswatch/dist/cyborg/bootstrap.min.css'; // Používaš tému Cyborg
+import './index.css'; // Import globálnych štýlov (prechodové pozadie)
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';

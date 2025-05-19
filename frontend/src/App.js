@@ -19,11 +19,20 @@ import EmployeeList from './components/Employees/EmployeeList';
 import AddEmployee from './components/Employees/AddEmployee';
 import EditEmployee from './components/Employees/EditEmployee';
 import EmployeeDetails from './components/Employees/EmployeeDetails';
+import Employees from './components/Employees';
 
 // Company Items
 import CompanyItemList from './components/CompanyItemList';
 import AddCompanyItem from './components/AddCompanyItem';
 import EditCompanyItem from './components/EditCompanyItem';
+
+// New Pages
+import Calendar from './components/Calendar'; // Import kalendára
+import Contacts from './components/Contacts'; // Import kontaktov
+import Payments from './components/Payments'; // Import platieb
+
+// Import Bootstrap Icons globally
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function AppContent() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -45,6 +54,9 @@ function AppContent() {
               <Route path="/add-company-item" element={<ProtectedRoute><AddCompanyItem /></ProtectedRoute>} />
               <Route path="/edit-company-item/:id" element={<ProtectedRoute><EditCompanyItem /></ProtectedRoute>} />
               <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
+              <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} /> {/* Cesta pre kalendár */}
+              <Route path="/contacts" element={<ProtectedRoute><Contacts /></ProtectedRoute>} /> {/* Cesta pre kontakty */}
+              <Route path="/payments" element={<ProtectedRoute><Payments /></ProtectedRoute>} /> {/* Cesta pre platby */}
               <Route path="/create-profile" element={<ProtectedRoute><CreateProfile /></ProtectedRoute>} />
               <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
               <Route path="/*" element={<Navigate to="/dashboard" replace />} />

@@ -28,15 +28,7 @@ const EmployeeProfile = () => {
 
   return (
     <Container className="pt-5 mt-4">
-      <Card
-        className="p-4 shadow-lg mb-4"
-        style={{
-          background: 'rgba(0, 0, 0, 0.5)',
-          backdropFilter: 'blur(12px)',
-          color: 'white',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-        }}
-      >
+      <Card className="employee-card p-4 shadow-lg mb-4">
         <Card.Title className="mb-3">
           👤 {employee.firstName} {employee.lastName}
         </Card.Title>
@@ -70,8 +62,7 @@ const EmployeeProfile = () => {
                 ) : (
                   <Badge bg="secondary">Žiadne zmluvy</Badge>
                 )}
-                {/* Tu je uploader */}
-                <div className="mt-2">
+                <div className="employee-contracts">
                   <ContractUploader
                     employeeId={employee._id}
                     onUpload={(updated) => setEmployee(updated)}
@@ -95,7 +86,7 @@ const EmployeeProfile = () => {
           </Col>
         </Row>
 
-        <div className="mt-4 d-flex justify-content-end">
+        <div className="employee-edit-btn">
           <Button variant="outline-light" onClick={() => navigate(`/edit-employee/${employee._id}`)}>
             ✏️ Upraviť profil
           </Button>
