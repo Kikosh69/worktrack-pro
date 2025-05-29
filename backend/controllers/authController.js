@@ -34,8 +34,11 @@ exports.login = async (req, res) => {
   }
 };
 
+// Overenie tokenu (funguje s Bearer aj x-auth-token)
 exports.verifyToken = (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
+  let token =
+    req.header('x-auth-token') ||
+    (req.header('Authorization') && req.header('Authorization').replace('Bearer ', ''));
   if (!token) {
     return res.status(401).json({ message: 'Access denied' });
   }
@@ -45,6 +48,34 @@ exports.verifyToken = (req, res, next) => {
     next();
   } catch (err) {
     res.status(400).json({ message: 'Invalid token' });
+  }
+};
+
+// Získanie údajov o sebe
+exports.getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('-password');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Úprava svojho profilu (meno, email, heslo)
+exports.updateMe = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    const update = {};
+    if (name) update.name = name;
+    if (email) update.email = email;
+    if (password) update.password = await bcrypt.hash(password, 10);
+
+    const user = await User.findByIdAndUpdate(req.user.userId, update, { new: true }).select('-password');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 

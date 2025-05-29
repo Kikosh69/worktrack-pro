@@ -1,73 +1,40 @@
 import React, { useState } from 'react';
-import { Container, Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-function CreateProfile() {
-  const [profile, setProfile] = useState({
+const CreateProfile = () => {
+  const [form, setForm] = useState({
     username: '',
-    email: '',
-    password: ''
+    password: '',
+    name: '',
+    email: ''
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProfile({ ...profile, [name]: value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5001/api/profiles', profile);
-      alert('Profil bol úspešne vytvorený.');
-    } catch (error) {
-      console.error('Chyba pri vytváraní profilu:', error);
-      alert('Nepodarilo sa vytvoriť profil.');
+      await axios.post('http://localhost:5001/api/auth/register', {
+        ...form,
+        role: 'user'
+      });
+      alert('Profil úspešne vytvorený!');
+    } catch (err) {
+      alert('Chyba: ' + (err.response?.data?.message || err.message));
     }
   };
 
   return (
-    <Container className="mt-5">
-      <Card className="p-4 shadow">
-        <h2 className="text-center mb-4">Vytvoriť profil</h2>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group>
-            <Form.Label>Užívateľské meno</Form.Label>
-            <Form.Control
-              type="text"
-              name="username"
-              value={profile.username}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              name="email"
-              value={profile.email}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Heslo</Form.Label>
-            <Form.Control
-              type="password"
-              name="password"
-              value={profile.password}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Button className="mt-3" type="submit">Vytvoriť</Button>
-        </Form>
-      </Card>
-    </Container>
+    <form onSubmit={handleSubmit}>
+      <input name="username" placeholder="Používateľské meno" value={form.username} onChange={handleChange} required />
+      <input name="name" placeholder="Meno" value={form.name} onChange={handleChange} />
+      <input name="email" placeholder="Email" value={form.email} onChange={handleChange} />
+      <input name="password" type="password" placeholder="Heslo" value={form.password} onChange={handleChange} required />
+      <button type="submit">Vytvoriť profil</button>
+    </form>
   );
-}
+};
 
 export default CreateProfile;

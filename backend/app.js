@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const employeeRoutes = require('./routes/employeeRoutes');
 const authRoutes = require('./routes/auth');
-const { createAdmin } = require('./controllers/authController'); // ✅ Import
+const { createAdmin } = require('./controllers/authController');
 
 const app = express();
 app.use(cors());
@@ -12,15 +12,13 @@ app.use(express.json());
 const dashboardRoutes = require('./routes/dashboardRoutes');
 app.use('/api/dashboard', dashboardRoutes);
 
-
-// MongoDB connection
-mongoose.connect('mongodb://localhost:27017/worktrack', {
+mongoose.connect('mongodb://localhost:27017/worktrack-pro', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
 .then(async () => {
   console.log('MongoDB connected');
-  await createAdmin(); // ✅ Spustenie funkcie na vytvorenie admina
+  await createAdmin();
 })
 .catch((err) => console.error('MongoDB connection error:', err));
 
